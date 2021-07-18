@@ -4,7 +4,7 @@
 #include "selfdrive/ui/qt/api.h"
 #include "selfdrive/ui/qt/widgets/input.h"
 
-SSshControl::SshControl() : ButtonControl("SSH Keys", "", "경고: 이 버튼을 승인할 시 당신의 깃허브 설정에서 공개키로 ssh 접속이 허가됩니다. 본인의 계정 이외의 다른 계정을 입력하지 마십시오. 콤마에서는 절대 개인의 깃허브 아이디를 요청하지 않습니다.") {
+SshControl::SshControl() : ButtonControl("SSH Keys", "", "경고: 이 버튼을 승인할 시 당신의 깃허브 설정에서 공개키로 ssh 접속이 허가됩니다. 본인의 계정 이외의 다른 계정을 입력하지 마십시오. 콤마에서는 절대 개인의 깃허브 아이디를 요청하지 않습니다.") {
   username_label.setAlignment(Qt::AlignRight | Qt::AlignVCenter);
   username_label.setStyleSheet("color: #aaaaaa");
   hlayout->insertWidget(1, &username_label);
