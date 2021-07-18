@@ -40,13 +40,13 @@ DriveStats::DriveStats(QWidget* parent) : QWidget(parent) {
     main_layout->addWidget(labels.distance = numberLabel(), row, 1, Qt::AlignLeft);
     main_layout->addWidget(labels.hours = numberLabel(), row, 2, Qt::AlignLeft);
 
-    main_layout->addWidget(unitLabel("DRIVES"), row + 1, 0, Qt::AlignLeft);
+    main_layout->addWidget(unitLabel("주행수"), row + 1, 0, Qt::AlignLeft);
     main_layout->addWidget(labels.distance_unit = unitLabel(getDistanceUnit()), row + 1, 1, Qt::AlignLeft);
-    main_layout->addWidget(unitLabel("HOURS"), row + 1, 2, Qt::AlignLeft);
+    main_layout->addWidget(unitLabel("주행시간"), row + 1, 2, Qt::AlignLeft);
   };
 
-  add_stats_layouts("ALL TIME", all_);
-  add_stats_layouts("PAST WEEK", week_);
+  add_stats_layouts("전체 주행", all_);
+  add_stats_layouts("지난주", week_);
 
   /*std::string dongle_id = Params().get("DongleId");
   if (util::is_valid_dongle_id(dongle_id)) {

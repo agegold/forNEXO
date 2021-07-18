@@ -44,7 +44,7 @@ class CarInterface(CarInterfaceBase):
       if fw.ecu == "eps" and b"," in fw.fwVersion:
         eps_modified = True
 
-    ret.maxSteeringAngleDeg = 90.
+    ret.maxSteeringAngleDeg = 180.
 
     # lateral
     ret.lateralTuning.init('lqr')
@@ -191,6 +191,11 @@ class CarInterface(CarInterfaceBase):
       ret.centerToFront = ret.wheelbase * 0.4
       ret.maxSteeringAngleDeg = 120.
       ret.startAccel = 0.5
+    elif candidate == CAR.NEXO:
+      ret.mass = 1885. + STD_CARGO_KG
+      ret.wheelbase = 2.79
+      ret.centerToFront = ret.wheelbase * 0.4
+      tire_stiffness_factor = 0.7   
     # kia
     elif candidate == CAR.SORENTO:
       ret.mass = 1985. + STD_CARGO_KG
