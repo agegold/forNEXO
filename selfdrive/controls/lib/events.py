@@ -418,7 +418,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       Priority.LOWEST, VisualAlert.steerRequired, AudibleAlert.none, .0, .0, .1),
   },
 
-  EventName.steerTempUnavailableUserOverride: {
+  EventName.steerTempUnavailableSilent: {
     ET.WARNING: Alert(
       "핸들을 잡아주세요",
       "조향제어 일시적으로 사용불가",
