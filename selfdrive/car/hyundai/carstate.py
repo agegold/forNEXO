@@ -48,7 +48,7 @@ class CarState(CarStateBase):
     self.cruiseState_speed = 0
 
     self.use_cluster_speed = Params().get_bool('UseClusterSpeed')
-    self.gear_shifter = GearShifter.drive # Gear_init for Nexo  ?? unknown 21.02.23.LSW
+    self.gear_shifter = GearShifter.park # Gear_init for Nexo  ?? unknown 21.02.23.LSW
 
   def update(self, cp, cp2, cp_cam):
     cp_mdps = cp2 if self.mdps_bus else cp
