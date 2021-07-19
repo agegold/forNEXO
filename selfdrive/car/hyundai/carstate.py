@@ -48,7 +48,7 @@ class CarState(CarStateBase):
     self.cruiseState_speed = 0
 
     self.use_cluster_speed = Params().get_bool('UseClusterSpeed')
-    self.gear_shifter = GearShifter.drive # Gear_init for Nexo ?? unknown 21.02.23.LSW
+    self.gear_shifter = GearShifter.drive # Gear_init for Nexo  ?? unknown 21.02.23.LSW
 
   def update(self, cp, cp2, cp_cam):
     cp_mdps = cp2 if self.mdps_bus else cp
@@ -150,6 +150,8 @@ class CarState(CarStateBase):
     if self.CP.carFingerprint in FEATURES["use_cluster_gears"]:
       gear = cp.vl["CLU15"]["CF_Clu_Gear"]
     elif self.CP.carFingerprint in FEATURES["use_tcu_gears"]:
+      gear = cp.vl["TCU12"]["CUR_GR"]
+    elif self.CP.carFingerprint in FEATURES["use_elect_gears"]:#  Nexo elect_Gear only !!!
       gear = cp.vl["ELECT_GEAR"]["Elect_Gear_Shifter"]
       gear_disp = cp.vl["ELECT_GEAR"]
 
@@ -165,15 +167,15 @@ class CarState(CarStateBase):
         gear_shifter = GearShifter.reverse
 
       if gear_shifter != GearShifter.unknown and self.gear_shifter != gear_shifter:
-        self.gear_shifter = gear_shifter
+        self.gear_shifter = gear_shifterP
 
       ret.gearShifter = self.gear_shifter
-    elif self.CP.carFingerprint in FEATURES["use_elect_gears"]:
+    # Gear Selecton - This is not compatible with all Kia/Hyundai's, But is the best way for those it is compatible with
       gear = cp.vl["ELECT_GEAR"]["Elect_Gear_Shifter"]
     else:
       gear = cp.vl["LVR12"]["CF_Lvr_Gear"]
 
-    #ret.gearShifter = self.parse_gear_shifter(self.shifter_values.get(gear))
+    #ret.gearShifter = self.parse_gear_shifter(self.shifter_values.get(gear)) # 기존 기어인식 방법 사용 fix by PolorBear 21.07.19
 
     if self.CP.carFingerprint in FEATURES["use_fca"]:
       ret.stockAeb = cp.vl["FCA11"]["FCA_CmdAct"] != 0
