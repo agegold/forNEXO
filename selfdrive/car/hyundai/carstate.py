@@ -167,7 +167,7 @@ class CarState(CarStateBase):
         gear_shifter = GearShifter.reverse
 
       if gear_shifter != GearShifter.unknown and self.gear_shifter != gear_shifter:
-        self.gear_shifter = gear_shifterP
+        self.gear_shifter = gear_shifter
 
       ret.gearShifter = self.gear_shifter
     # Gear Selecton - This is not compatible with all Kia/Hyundai's, But is the best way for those it is compatible with
