@@ -1,14 +1,19 @@
-Version 0.8.6 (2021-XX-XX)
+Version 0.8.7 (2021-07-31)
 ========================
  * New driving model with improved laneless performance
    * Trained on 5000+ hours of diverse driving data from 3000+ users in 40+ countries
-   * Better anti-cheating methods during simulator training ensure the model hugs less when in laneless mode
-   * All new desire ground-truthing stack makes the model better at lane changes and keeps
+   * Better anti-cheating methods during simulator training ensure the model hugs less in laneless mode
+   * All new desire ground-truthing stack makes the model better at lane changes
+ * Volkswagen T-Cross 2021 support thanks to jyoung8607!
+
+Version 0.8.6 (2021-07-21)
+========================
  * Revamp lateral and longitudinal planners
    * Refactor planner output API to be more readable and verbose
    * Planners now output desired trajectories for speed, acceleration, curvature, and curvature rate
-   * Use MPC for longitudinal planning when no lead car is present, this replaces a mostly hardcoded policy and makes accel and deccel smoother
+   * Use MPC for longitudinal planning when no lead car is present, makes accel and decel smoother
  * Remove "CHECK DRIVER FACE VISIBILITY" warning
+ * Fixed cruise fault on some TSS2.5 Camrys and international Toyotas
  * Hyundai Elantra Hybrid 2021 support thanks to tecandrew!
  * Hyundai Ioniq PHEV 2020 support thanks to YawWashout!
  * Kia Niro Hybrid 2019 support thanks to jyoung8607!

@@ -10,10 +10,16 @@ enum class SecurityType {
   WPA,
   UNSUPPORTED
 };
-enum class ConnectedType{
+enum class ConnectedType {
   DISCONNECTED,
   CONNECTING,
   CONNECTED
+};
+enum class NetworkType {
+  NONE,
+  WIFI,
+  CELL,
+  ETHERNET
 };
 
 typedef QMap<QString, QMap<QString, QVariant>> Connection;
@@ -29,6 +35,7 @@ struct Network {
 
 class WifiManager : public QWidget {
   Q_OBJECT
+
 public:
   explicit WifiManager(QWidget* parent);
 
@@ -41,6 +48,7 @@ public:
   void forgetConnection(const QString &ssid);
   bool isKnownConnection(const QString &ssid);
   void activateWifiConnection(const QString &ssid);
+  NetworkType currentNetworkType();
 
   void connect(const Network &ssid);
   void connect(const Network &ssid, const QString &password);
@@ -69,7 +77,7 @@ private:
   QString get_ipv4_address();
   void connect(const QByteArray &ssid, const QString &username, const QString &password, SecurityType security_type);
   QString activeAp;
-  QString getActiveAp();
+  void initActiveAp();
   void deactivateConnection(const QString &ssid);
   QVector<QDBusObjectPath> get_active_connections();
   uint get_wifi_device_state();
