@@ -14,7 +14,7 @@ from selfdrive.config import Conversions as CV
 import cereal.messaging as messaging
 from cereal import log
 
-AUTO_LCA_START_TIME = 0.5
+AUTO_LCA_START_TIME = 0.0
 
 LaneChangeState = log.LateralPlan.LaneChangeState
 LaneChangeDirection = log.LateralPlan.LaneChangeDirection

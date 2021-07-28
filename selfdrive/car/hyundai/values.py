@@ -782,7 +782,7 @@ FEATURES = {
   "has_scc13": {CAR.PALISADE, CAR.NIRO_HEV, CAR.K9, CAR.GENESIS_G90},
   "has_scc14": {CAR.PALISADE, CAR.NIRO_HEV, CAR.K9, CAR.GENESIS_G90},
 
-  "fix_lkas": {CAR.GENESIS_G90, CAR.K9},
+  "use_ldws": False,
 }
 
 HYBRID_CAR = set({})

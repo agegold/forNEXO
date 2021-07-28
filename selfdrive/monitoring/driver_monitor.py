@@ -16,10 +16,10 @@ EventName = car.CarEvent.EventName
 # ******************************************************************************************
 
 class DRIVER_MONITOR_SETTINGS():
-  _AWARENESS_TIME = 35. # passive wheeltouch total timeout
+  _AWARENESS_TIME = 300. # passive wheeltouch total timeout
   _AWARENESS_PRE_TIME_TILL_TERMINAL = 12.
   _AWARENESS_PROMPT_TIME_TILL_TERMINAL = 6.
-  _DISTRACTED_TIME = 11. # active monitoring total timeout
+  _DISTRACTED_TIME = 300. # active monitoring total timeout
   _DISTRACTED_PRE_TIME_TILL_TERMINAL = 8.
   _DISTRACTED_PROMPT_TIME_TILL_TERMINAL = 6.
 
