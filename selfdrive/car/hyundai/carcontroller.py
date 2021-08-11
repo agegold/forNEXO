@@ -29,7 +29,8 @@ def accel_hysteresis(accel, accel_steady):
   return accel, accel_steady
 
 
-SP_CARS = [CAR.NEXO]
+SP_CARS = [CAR.GENESIS, CAR.GENESIS_G70, CAR.GENESIS_G80,
+           CAR.GENESIS_EQ900, CAR.GENESIS_EQ900_L, CAR.K9, CAR.GENESIS_G90]
 
 def process_hud_alert(enabled, fingerprint, visual_alert, left_lane, right_lane,
                       left_lane_depart, right_lane_depart):
@@ -174,9 +175,7 @@ class CarController():
 
     if pcm_cancel_cmd and (self.longcontrol and not self.mad_mode_enabled):
       can_sends.append(create_clu11(self.packer, frame % 0x10, CS.scc_bus, CS.clu11, Buttons.CANCEL, clu11_speed))
-
     else:
-    
       can_sends.append(create_mdps12(self.packer, frame, CS.mdps12))
 
     # fix auto resume - by neokii
@@ -222,12 +221,9 @@ class CarController():
     # send scc to car if longcontrol enabled and SCC not on bus 0 or ont live
     if self.longcontrol and CS.cruiseState_enabled and (CS.scc_bus or not self.scc_live) and frame % 2 == 0:
 
-      apply_accel, lead_drel = self.scc_smoother.get_fused_accel(apply_accel, aReqValue, controls.sm)
-      controls.fused_accel = apply_accel
-      controls.lead_drel = lead_drel
-
       can_sends.append(create_scc12(self.packer, apply_accel, enabled, self.scc12_cnt, self.scc_live, CS.scc12))
-      can_sends.append(create_scc11(self.packer, frame, enabled, set_speed, lead_visible, self.scc_live, CS.scc11))
+      can_sends.append(create_scc11(self.packer, frame, enabled, set_speed, lead_visible, self.scc_live, CS.scc11,
+                                    self.scc_smoother.active_cam))
 
       if frame % 20 == 0 and CS.has_scc13:
         can_sends.append(create_scc13(self.packer, CS.scc13))
