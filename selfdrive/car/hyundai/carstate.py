@@ -48,7 +48,7 @@ class CarState(CarStateBase):
     self.cruiseState_speed = 0
 
     self.use_cluster_speed = Params().get_bool('UseClusterSpeed')
-    self.gear_shifter = GearShifter.park # Gear_init for Nexo  ?? unknown 21.02.23.LSW
+    self.long_control_enabled = Params().get_bool('LongControlEnabled')
 
   def update(self, cp, cp2, cp_cam):
     cp_mdps = cp2 if self.mdps_bus else cp
@@ -71,21 +71,19 @@ class CarState(CarStateBase):
     self.is_set_speed_in_mph = bool(cp.vl["CLU11"]["CF_Clu_SPEED_UNIT"])
     self.speed_conv_to_ms = CV.MPH_TO_MS if self.is_set_speed_in_mph else CV.KPH_TO_MS
 
-    if self.use_cluster_speed:
-
+    if not self.use_cluster_speed or self.long_control_enabled:
+      ret.wheelSpeeds.fl = cp.vl["WHL_SPD11"]['WHL_SPD_FL'] * CV.KPH_TO_MS
+      ret.wheelSpeeds.fr = cp.vl["WHL_SPD11"]['WHL_SPD_FR'] * CV.KPH_TO_MS
+      ret.wheelSpeeds.rl = cp.vl["WHL_SPD11"]['WHL_SPD_RL'] * CV.KPH_TO_MS
+      ret.wheelSpeeds.rr = cp.vl["WHL_SPD11"]['WHL_SPD_RR'] * CV.KPH_TO_MS
+      ret.vEgoRaw = (ret.wheelSpeeds.fl + ret.wheelSpeeds.fr + ret.wheelSpeeds.rl + ret.wheelSpeeds.rr) / 4.
+    else:
       ret.vEgoRaw = cp.vl["CLU11"]["CF_Clu_Vanz"]
       decimal = cp.vl["CLU11"]["CF_Clu_VanzDecimal"]
       if 0. < decimal < 0.5:
         ret.vEgoRaw += decimal
 
       ret.vEgoRaw *= self.speed_conv_to_ms
-
-    else:
-      ret.wheelSpeeds.fl = cp.vl["WHL_SPD11"]['WHL_SPD_FL'] * CV.KPH_TO_MS
-      ret.wheelSpeeds.fr = cp.vl["WHL_SPD11"]['WHL_SPD_FR'] * CV.KPH_TO_MS
-      ret.wheelSpeeds.rl = cp.vl["WHL_SPD11"]['WHL_SPD_RL'] * CV.KPH_TO_MS
-      ret.wheelSpeeds.rr = cp.vl["WHL_SPD11"]['WHL_SPD_RR'] * CV.KPH_TO_MS
-      ret.vEgoRaw = (ret.wheelSpeeds.fl + ret.wheelSpeeds.fr + ret.wheelSpeeds.rl + ret.wheelSpeeds.rr) / 4.
 
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
 
@@ -151,31 +149,12 @@ class CarState(CarStateBase):
       gear = cp.vl["CLU15"]["CF_Clu_Gear"]
     elif self.CP.carFingerprint in FEATURES["use_tcu_gears"]:
       gear = cp.vl["TCU12"]["CUR_GR"]
-    elif self.CP.carFingerprint in FEATURES["use_elect_gears"]:#  Nexo elect_Gear only !!!
-      gear = cp.vl["ELECT_GEAR"]["Elect_Gear_Shifter"]
-      gear_disp = cp.vl["ELECT_GEAR"]
-
-      gear_shifter = GearShifter.unknown
-
-      if gear == 1546:  # Thank you for Neokii 
-        gear_shifter = GearShifter.drive
-      elif gear == 2314:
-        gear_shifter = GearShifter.neutral
-      elif gear == 2569:
-        gear_shifter = GearShifter.park
-      elif gear == 2566:
-        gear_shifter = GearShifter.reverse
-
-      if gear_shifter != GearShifter.unknown and self.gear_shifter != gear_shifter:
-        self.gear_shifter = gear_shifter
-
-      ret.gearShifter = self.gear_shifter
-    # Gear Selecton - This is not compatible with all Kia/Hyundai's, But is the best way for those it is compatible with
+    elif self.CP.carFingerprint in FEATURES["use_elect_gears"]:
       gear = cp.vl["ELECT_GEAR"]["Elect_Gear_Shifter"]
     else:
       gear = cp.vl["LVR12"]["CF_Lvr_Gear"]
 
-    #ret.gearShifter = self.parse_gear_shifter(self.shifter_values.get(gear)) # 기존 기어인식 방법 사용 fix by PolorBear 21.07.19
+    ret.gearShifter = self.parse_gear_shifter(self.shifter_values.get(gear))
 
     if self.CP.carFingerprint in FEATURES["use_fca"]:
       ret.stockAeb = cp.vl["FCA11"]["FCA_CmdAct"] != 0
@@ -210,7 +189,8 @@ class CarState(CarStateBase):
       self.scc14 = cp_scc.vl["SCC14"]
 
     self.lkas_error = cp_cam.vl["LKAS11"]["CF_Lkas_LdwsSysState"] == 7
-    if not self.lkas_error and self.car_fingerprint not in [CAR.NEXO]:
+    if not self.lkas_error and self.car_fingerprint not in [CAR.SONATA,CAR.PALISADE,
+                    CAR.SONATA_HEV, CAR.SONATA21_HEV, CAR.SANTA_FE, CAR.KONA_EV, CAR.NIRO_EV, CAR.KONA]:
       self.lkas_button_on = bool(cp_cam.vl["LKAS11"]["CF_Lkas_LdwsSysState"])
 
 
