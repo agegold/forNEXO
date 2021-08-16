@@ -108,9 +108,10 @@ class CarController():
       lkas_active = False
 
     # Disable steering while turning blinker on and speed below 60 kph
+    #CS.out.vEgo = 현재 차량속도  CV.KPH_TO_MS = ms->km 변환
     if CS.out.leftBlinker or CS.out.rightBlinker:
       self.turning_signal_timer = 0.5 / DT_CTRL  # Disable for 0.5 Seconds after blinker turned off
-    if self.turning_indicator_alert: # set and clear by interface
+    if self.turning_indicator_alert and CS.out.vEgo < 25 * CV.KPH_TO_MS: # set and clear by interface ->방향 지시등이 켜져도 조향을 유지 합니다. 25km 이하에서 off 
       lkas_active = 0
     if self.turning_signal_timer > 0:
       self.turning_signal_timer -= 1
