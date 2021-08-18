@@ -12,7 +12,7 @@ from common.numpy_fast import interp
 from common.realtime import sec_since_boot
 
 
-CAMERA_SPEED_FACTOR = 1.05
+CAMERA_SPEED_FACTOR = 0.98
 
 class Port:
   BROADCAST_PORT = 2899

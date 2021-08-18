@@ -1,4 +1,7 @@
 
+**This is only for Hyundai Nexo !!**
+This is only for Hyundai Nexo. Please use a different brand for other vehicles.
+
 **This is based on xx979xx for Hyundai, Kia, Genesis.**
 
 https://github.com/xx979xx/openpilot
