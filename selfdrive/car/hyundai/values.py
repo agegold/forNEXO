@@ -802,6 +802,8 @@ FEATURES = {
   # send LFA MFA message for new HKG models
   "send_lfa_mfa": {CAR.NEXO},
 
+  "send_hda_state_2": {CAR.GENESIS_G80, CAR.GENESIS_EQ900, CAR.GENESIS_EQ900_L},
+
   # these cars use the FCA11 message for the AEB and FCW signals, all others use SCC12
   "use_fca": {CAR.NEXO},
 
